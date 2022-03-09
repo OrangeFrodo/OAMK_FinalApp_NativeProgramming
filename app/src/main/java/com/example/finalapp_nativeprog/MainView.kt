@@ -1,18 +1,28 @@
 package com.example.finalapp_nativeprog
 
+import android.widget.Space
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.google.firebase.components.Component
+
+const val HOME_ROUTE = "home"
+const val NOTE_ROUTE = "note"
 
 @Composable
 fun MainView() {
@@ -27,11 +37,100 @@ fun MainView() {
 
 @Composable
 fun MainScaffoldView() {
+
+    // Remember state nav controller
+    val navController = rememberNavController()
+
     Scaffold(
         topBar = {TopBarView()},
-        bottomBar = {},
-        content = {},
+        bottomBar = {BottomBarView(navController)},
+        content = { MainContentView(navController = navController)},
     )
+}
+
+@Composable
+fun MainContentView(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = HOME_ROUTE)
+    {
+        composable(route = HOME_ROUTE) {
+            HomeView()
+        }
+        composable(route = NOTE_ROUTE) {
+            NoteView()
+        }
+    }
+}
+
+@Composable
+fun HomeView() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(Color(0xFFF7AA23)),
+    ) {
+        Text(text = "Home view")
+    }
+}
+
+@Composable
+fun NoteView() {
+
+    var note by remember { mutableStateOf("") }
+    val noteVM = viewModel<NoteViewModel>(LocalContext.current as ComponentActivity)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF7AA23))
+            .padding(13.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextField(
+            value = note,
+            onValueChange = {note = it},
+            label = { Text(text = "Todo note")}
+        )
+        OutlinedButton(
+            onClick = { noteVM.addNote(Note(note)) }
+        ) {
+            Text(text = "Add todo note")
+        }
+        
+        Spacer(modifier = Modifier.height(10.dp))
+        
+        noteVM.notes.value.forEach{
+            Divider(thickness = 2.dp)
+            Text(text = it.message)
+        }
+    }
+}
+
+@Composable
+fun BottomBarView(navController: NavHostController) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF7CA43)),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_baseline_home_24),
+            contentDescription = "home",
+            modifier = Modifier.clickable {
+                navController.navigate(HOME_ROUTE)
+            }
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_baseline_notes_24),
+            contentDescription = "note",
+            modifier = Modifier.clickable {
+                navController.navigate(NOTE_ROUTE)
+            }
+        )}
 }
 
 @Composable
