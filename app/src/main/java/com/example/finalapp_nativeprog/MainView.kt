@@ -96,7 +96,7 @@ fun MemeView() {
         )
     }
     Button(onClick = { vm.getNewImage() }) {
-        Text(text = "Get meme")
+        Text(text = "Get memes")
     }
 }
 
