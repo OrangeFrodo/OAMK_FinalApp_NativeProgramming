@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -19,6 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.google.firebase.components.Component
 
 const val HOME_ROUTE = "home"
@@ -71,7 +73,30 @@ fun HomeView() {
             .fillMaxHeight()
             .background(Color(0xFFF7AA23)),
     ) {
-        Text(text = "Home view")
+        Text(text = "My imagination left me, so I did what you did")
+        MemeView()
+    }
+}
+
+@Composable
+fun MemeView() {
+
+    val vm = viewModel<YesNoViewModel>()
+
+    Card(
+        modifier = Modifier
+            .size(200.dp, 200.dp)
+            .padding(20.dp),
+        elevation = 5.dp
+    ) {
+        AsyncImage(
+            model = vm.imageURL.value,
+            contentDescription = "",
+            contentScale = ContentScale.Crop
+        )
+    }
+    Button(onClick = { vm.getNewImage() }) {
+        Text(text = "Get meme")
     }
 }
 
