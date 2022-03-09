@@ -9,6 +9,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class UserViewModel: ViewModel() {
+
     val userName = mutableStateOf<String>("Jakub")
 
 
