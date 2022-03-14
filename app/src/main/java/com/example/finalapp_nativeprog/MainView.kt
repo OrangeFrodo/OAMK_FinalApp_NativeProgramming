@@ -76,7 +76,7 @@ fun HomeView() {
         Text(
             modifier = Modifier
                 .padding(30.dp),
-            text = "My imagination left me, so I did what you did",
+            text = "My imagination left me, so I did what you did ",
         )
         MemeView()
     }
