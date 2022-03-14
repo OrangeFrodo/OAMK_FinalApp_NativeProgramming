@@ -11,10 +11,12 @@ import retrofit2.create
 
 class YesNoViewModel: ViewModel() {
 
+    // Get path
     private val PATH = "https://yesno.wtf/"
-    val imageURL = mutableStateOf("")
-    val answer = mutableStateOf("")
+    val imageURL = mutableStateOf("")   // Store image url
+    val answer = mutableStateOf("")     // Store answer
 
+    // Get api
     private val api by lazy {
         Retrofit
             .Builder()

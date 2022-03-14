@@ -73,7 +73,11 @@ fun HomeView() {
             .fillMaxHeight()
             .background(Color(0xFFF7AA23)),
     ) {
-        Text(text = "My imagination left me, so I did what you did")
+        Text(
+            modifier = Modifier
+                .padding(30.dp),
+            text = "My imagination left me, so I did what you did",
+        )
         MemeView()
     }
 }
@@ -83,20 +87,29 @@ fun MemeView() {
 
     val vm = viewModel<YesNoViewModel>()
 
-    Card(
+    Column(
         modifier = Modifier
-            .size(200.dp, 200.dp)
-            .padding(20.dp),
-        elevation = 5.dp
+            .padding(100.dp)
     ) {
-        AsyncImage(
-            model = vm.imageURL.value,
-            contentDescription = "",
-            contentScale = ContentScale.Crop
-        )
-    }
-    Button(onClick = { vm.getNewImage() }) {
-        Text(text = "Get memes")
+        Card(
+            modifier = Modifier
+                .size(200.dp, 200.dp)
+                .padding(20.dp),
+            elevation = 5.dp
+        ) {
+            AsyncImage(
+                model = vm.imageURL.value,
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+        }
+        Button(
+            modifier = Modifier
+                .padding(40.dp),
+            onClick = { vm.getNewImage() },
+        ) {
+            Text(text = "Get meme")
+        }
     }
 }
 
